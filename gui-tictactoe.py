@@ -5,9 +5,149 @@ root = Tk()
 root.title('Tic-Tac-Toe-blah-blah')
 # root.geometry("480x480")
 
+clicked = True
+count = 0
 
-def btn_click(btn):
+
+def disable_all_buttons():
     pass
+
+
+def check_for_win():
+    global winner
+    winner = False
+
+    if b1["text"] == "X" and b2["text"] == "X" and b3["text"] == "X":
+        b1.config(bg="green")
+        b2.config(bg="green")
+        b3.config(bg="green")
+        winner = True
+        messagebox.showinfo('Tic-Tac-Toe', "Player X wins")
+        disable_all_buttons
+    elif b4["text"] == "X" and b5["text"] == "X" and b6["text"] == "X":
+        b4.config(bg="green")
+        b5.config(bg="green")
+        b6.config(bg="green")
+        winner = True
+        messagebox.showinfo('Tic-Tac-Toe', "Player X wins")
+        disable_all_buttons
+    elif b7["text"] == "X" and b8["text"] == "X" and b9["text"] == "X":
+        b7.config(bg="green")
+        b8.config(bg="green")
+        b9.config(bg="green")
+        winner = True
+        messagebox.showinfo('Tic-Tac-Toe', "Player X wins")
+        disable_all_buttons
+    elif b1["text"] == "X" and b4["text"] == "X" and b7["text"] == "X":
+        b1.config(bg="green")
+        b4.config(bg="green")
+        b7.config(bg="green")
+        winner = True
+        messagebox.showinfo('Tic-Tac-Toe', "Player X wins")
+        disable_all_buttons
+    elif b2["text"] == "X" and b5["text"] == "X" and b8["text"] == "X":
+        b2.config(bg="green")
+        b5.config(bg="green")
+        b8.config(bg="green")
+        winner = True
+        messagebox.showinfo('Tic-Tac-Toe', "Player X wins")
+        disable_all_buttons
+    elif b3["text"] == "X" and b6["text"] == "X" and b9["text"] == "X":
+        b3.config(bg="green")
+        b6.config(bg="green")
+        b9.config(bg="green")
+        winner = True
+        messagebox.showinfo('Tic-Tac-Toe', "Player X wins")
+        disable_all_buttons
+    elif b1["text"] == "X" and b5["text"] == "X" and b9["text"] == "X":
+        b1.config(bg="green")
+        b5.config(bg="green")
+        b9.config(bg="green")
+        winner = True
+        messagebox.showinfo('Tic-Tac-Toe', "Player X wins")
+        disable_all_buttons
+    elif b3["text"] == "X" and b5["text"] == "X" and b7["text"] == "X":
+        b3.config(bg="green")
+        b5.config(bg="green")
+        b7.config(bg="green")
+        winner = True
+        messagebox.showinfo('Tic-Tac-Toe', "Player X wins")
+        disable_all_buttons
+
+    #   for Player O
+    elif b1["text"] == "O" and b2["text"] == "O" and b3["text"] == "O":
+        b1.config(bg="green")
+        b2.config(bg="green")
+        b3.config(bg="green")
+        winner = True
+        messagebox.showinfo('Tic-Tac-Toe', "Player O wins")
+        disable_all_buttons
+    elif b4["text"] == "O" and b5["text"] == "O" and b6["text"] == "O":
+        b4.config(bg="green")
+        b5.config(bg="green")
+        b6.config(bg="green")
+        winner = True
+        messagebox.showinfo('Tic-Tac-Toe', "Player O wins")
+        disable_all_buttons
+    elif b7["text"] == "O" and b8["text"] == "O" and b9["text"] == "O":
+        b7.config(bg="green")
+        b8.config(bg="green")
+        b9.config(bg="green")
+        winner = True
+        messagebox.showinfo('Tic-Tac-Toe', "Player O wins")
+        disable_all_buttons
+    elif b1["text"] == "O" and b4["text"] == "O" and b7["text"] == "O":
+        b1.config(bg="green")
+        b4.config(bg="green")
+        b7.config(bg="green")
+        winner = True
+        messagebox.showinfo('Tic-Tac-Toe', "Player O wins")
+        disable_all_buttons
+    elif b2["text"] == "O" and b5["text"] == "O" and b8["text"] == "O":
+        b2.config(bg="green")
+        b5.config(bg="green")
+        b8.config(bg="green")
+        winner = True
+        messagebox.showinfo('Tic-Tac-Toe', "Player O wins")
+        disable_all_buttons
+    elif b3["text"] == "O" and b6["text"] == "O" and b9["text"] == "O":
+        b3.config(bg="green")
+        b6.config(bg="green")
+        b9.config(bg="green")
+        winner = True
+        messagebox.showinfo('Tic-Tac-Toe', "Player O wins")
+        disable_all_buttons
+    elif b1["text"] == "O" and b5["text"] == "O" and b9["text"] == "O":
+        b1.config(bg="green")
+        b5.config(bg="green")
+        b9.config(bg="green")
+        winner = True
+        messagebox.showinfo('Tic-Tac-Toe', "Player O wins")
+        disable_all_buttons
+    elif b3["text"] == "O" and b5["text"] == "O" and b7["text"] == "O":
+        b3.config(bg="green")
+        b5.config(bg="green")
+        b7.config(bg="green")
+        winner = True
+        messagebox.showinfo('Tic-Tac-Toe', "Player O wins")
+        disable_all_buttons
+
+
+# btn is a widget
+def btn_click(btn):
+    global clicked, count
+
+    # btn.config(text="abc")
+    if btn["text"] == " " and clicked is True:
+        btn["text"] = "X"
+        clicked = False
+        count += 1  # keeps track of moves must not be greater than 9
+    elif btn["text"] == " " and clicked is False:
+        btn["text"] = "O"
+        clicked = True
+        count += 1
+    else:
+        messagebox.showerror("Tic-Tac-Toe", "Move made on this box already")
 
 
 # we need 9 buttons for the tictactoe grid

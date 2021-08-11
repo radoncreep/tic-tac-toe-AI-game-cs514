@@ -10,7 +10,15 @@ count = 0
 
 
 def disable_all_buttons():
-    pass
+    b1.config(state=DISABLED)
+    b2.config(state=DISABLED)
+    b3.config(state=DISABLED)
+    b4.config(state=DISABLED)
+    b5.config(state=DISABLED)
+    b6.config(state=DISABLED)
+    b7.config(state=DISABLED)
+    b8.config(state=DISABLED)
+    b9.config(state=DISABLED)
 
 
 def check_for_win():
@@ -142,10 +150,12 @@ def btn_click(btn):
         btn["text"] = "X"
         clicked = False
         count += 1  # keeps track of moves must not be greater than 9
+        check_for_win()
     elif btn["text"] == " " and clicked is False:
         btn["text"] = "O"
         clicked = True
         count += 1
+        check_for_win()
     else:
         messagebox.showerror("Tic-Tac-Toe", "Move made on this box already")
 

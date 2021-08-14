@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
+import random
 
 root = Tk()
 root.title('Tic-Tac-Toe-CS514-AI')
@@ -7,6 +8,7 @@ root.title('Tic-Tac-Toe-CS514-AI')
 
 clicked = True
 count = 0
+board_positions = []
 
 
 def start():
@@ -232,16 +234,26 @@ def btn_click(btn):
     # btn.config(text="abc")
     if btn["text"] == " " and clicked is True:
         btn["text"] = "X"
-        clicked = False
         count += 1  # keeps track of moves must not be greater than 9
         check_for_win()
-    elif btn["text"] == " " and clicked is False:
-        btn["text"] = "O"
-        clicked = True
-        count += 1
-        check_for_win()
+        if not winner:
+            clicked = False
+            play_ai(btn)
     else:
         messagebox.showerror("Tic-Tac-Toe", "Move made on this box already")
+
+
+def play_ai(btn):
+    global clicked, count
+    board_positions = [b1, b2, b3, b4, b5, b6, b7, b8, b9]
+    while clicked is False and count != 9:
+        random_position = random.randint(1, 9)
+        print(random_position)
+        if board_positions[random_position - 1]["text"] == " ":
+            board_positions[random_position - 1]["text"] = "O"
+            clicked = True
+            count += 1
+            check_for_win()
 
 
 game_menu = Menu(root)

@@ -265,3 +265,22 @@ menu_options.add_command(label="Restart Game", command=restart)
 
 start()
 root.mainloop()
+
+# if empty_space == 0:
+#     self.board_state[empty_space].grid(row=0, column=0)
+# elif empty_space == 1:
+#     self.board_state[empty_space].grid(row=0, column=1)
+# elif empty_space == 2:
+#     self.board_state[empty_space].grid(row=0, column=2)
+# elif empty_space == 3:
+#     self.board_state[empty_space].grid(row=0, column=3)
+# elif empty_space == 4:
+#     self.board_state[empty_space].grid(row=0, column=4)
+# elif empty_space == 5:
+#     self.board_state[empty_space].grid(row=0, column=5)
+# elif empty_space == 1:
+#     self.board_state[empty_space].grid(row=0, column=0)
+# elif empty_space == 1:
+#     self.board_state[empty_space].grid(row=0, column=0)
+# elif empty_space == 1:
+#     self.board_state[empty_space].grid(row=0, column=0)

@@ -100,6 +100,11 @@ class TicTacToe:
 
         self.is_there_winner = True
         messagebox.showinfo("TicTacToe", "player " + player + " wins")
+        self.disable_buttons()
+
+    def disable_buttons(self):
+        for i in range(len(self.board_state)):
+            self.board_state[i].config(state=DISABLED)
 
     # runs an iteration to check if "picked_position: (int)" on board_state is empty(True) or taken(False)
     def available_position(self, picked_position):
@@ -107,7 +112,6 @@ class TicTacToe:
 
     def play_as_human(self, btn):
         # can_make_move = lambda: selected_position == " "
-        print(self.board_state)
         if btn["text"] == " " and self.clicked is False:
             btn["text"] = self.player1
             self.total_moves += 1
@@ -116,10 +120,19 @@ class TicTacToe:
             self.clicked = True
             # if not winner after human plays then we play ai
             if not self.is_there_winner:
-                self.play_ai(btn)
+                self.play_ai(btn, self.board_state)
 
-    def play_ai(self, btn):
-        print(btn)
+    def get_empty_cells(self, current_board_state):
+        empty_cells_list = []
+        for i in range(len(current_board_state)):
+            if current_board_state[i]["text"] == " ":
+                empty_cells_list.append(i)
+
+        return empty_cells_list
+
+    def play_ai(self, btn, current_board_state):
+        print(self.get_empty_cells(current_board_state))
+        # print(btn)
         while self.clicked is True and self.total_moves != 9:
             random_position = random.randint(0, 8)
             print(random_position)

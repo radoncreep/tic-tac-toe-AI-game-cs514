@@ -71,35 +71,35 @@ class TicTacToe:
         win_positions = []
         # row check
         if board[0]["text"] == player and board[1]["text"] == player and board[2]["text"] == player:
-            self.display_win([0, 1, 2])
+            self.display_win([0, 1, 2], player)
         elif board[3]["text"] == player and board[4]["text"] == player and board[5]["text"] == player:
-            self.display_win([3, 4, 5])
+            self.display_win([3, 4, 5], player)
         elif board[6]["text"] == player and board[7]["text"] == player and board[8]["text"] == player:
-            self.display_win([6, 7, 8])
+            self.display_win([6, 7, 8], player)
 
         # column check
         elif board[0]["text"] == player and board[3]["text"] == player and board[6]["text"] == player:
-            self.display_win([0, 3, 6])
+            self.display_win([0, 3, 6], player)
         elif board[1]["text"] == player and board[4]["text"] == player and board[7]["text"] == player:
-            self.display_win([1, 4, 7])
+            self.display_win([1, 4, 7], player)
         elif board[2]["text"] == player and board[5]["text"] == player and board[8]["text"] == player:
-            self.display_win([2, 5, 8])
+            self.display_win([2, 5, 8], player)
 
         # possible diagonal wins
         elif board[0]["text"] == player and board[4]["text"] == player and board[8]["text"] == player:
-            self.display_win([0, 4, 8])
+            self.display_win([0, 4, 8], player)
 
         elif board[2]["text"] == player and board[4]["text"] == player and board[6]["text"] == player:
-            self.display_win([2, 4, 6])
+            self.display_win([2, 4, 6], player)
 
         return
 
-    def display_win(self, win_positions):
+    def display_win(self, win_positions, player):
         for i in range(len(win_positions)):
             self.board_state[win_positions[i]].config(bg="green")
 
         self.is_there_winner = True
-        messagebox.showinfo("TicTacToe", "player " + self.board_state[win_positions[0]]["text"] + " wins")
+        messagebox.showinfo("TicTacToe", "player " + player + " wins")
 
     # runs an iteration to check if "picked_position: (int)" on board_state is empty(True) or taken(False)
     def available_position(self, picked_position):

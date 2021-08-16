@@ -229,6 +229,7 @@ def check_for_win():
 
 # btn is a widget
 def btn_click(btn):
+    print(btn)
     global clicked, count
 
     # btn.config(text="abc")

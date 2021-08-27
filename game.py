@@ -22,7 +22,7 @@ class TicTacToe:
 
     # create a button and grid for every index/position of the board_state
     def create_board(self):
-        global b0, b1, b2, b3, b4, b5, b6, b7, b8, b9
+        global b0, b1, b2, b3, b4, b5, b6, b7, b8
         b0 = Button(root, text=" ", font=("Helvetica", 20), height=3, width=6, bg="SystemButtonFace",
                     command=lambda: self.play_as_human(b0))
         b1 = Button(root, text=" ", font=("Helvetica", 20), height=3, width=6, bg="SystemButtonFace",
@@ -50,12 +50,12 @@ class TicTacToe:
         self.board_state[6] = b6
         self.board_state[7] = b7
         self.board_state[8] = b8
-        self.create_grid()
 
-    def create_grid(self):
-        print('startws')
+        self.create_grid(self.board_state)
+
+    def create_grid(self, board):
         row = 0
-        for pos in range(len(self.board_state)):
+        for pos in range(len(board)):
             # print('pos, ' + str(pos))
             if pos == 3 or pos == 6:
                 row += 1
@@ -67,8 +67,8 @@ class TicTacToe:
             elif pos == 6 or pos == 7 or pos == 8:
                 self.board_state[pos].grid(row=row, column=(pos - row*3))
 
-    def check_for_win(self, player):
-        board = self.board_state
+    def check_for_win(self, player, board_type):
+        board = board_type
         win_positions = []
         # row check
         if board[0]["text"] == player and board[1]["text"] == player and board[2]["text"] == player:
@@ -144,7 +144,7 @@ class TicTacToe:
 
         btn["text"] = player_ai
         self.total_moves += 1
-        self.check_for_win(player_ai)
+        self.check_for_win(player_ai, current_board_state)
 
 
         # print(btn)
@@ -167,6 +167,7 @@ class TicTacToe:
         return empty_cells_list
 
     def use_minimax(self, current_board_state, current_player_mark, maximizing_player):
+        print(self.board_state)
         available_cells_on_board = self.get_empty_cells(current_board_state)
         terminal_state = dict()
 

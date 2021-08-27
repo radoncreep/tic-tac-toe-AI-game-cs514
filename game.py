@@ -1,13 +1,10 @@
 from tkinter import *
 from tkinter import messagebox
-import random
 
 root = Tk()
 root.title('Tic-Tac-Toe-CS514-AI')
 
-
 clicked_on_start_game = False
-
 
 class TicTacToe:
     def __init__(self, player1, player2):
@@ -16,7 +13,6 @@ class TicTacToe:
         self.board_state = [None] * 9
 
     total_moves = 0
-    clicked = False
     is_there_winner = False
     player_win = None
 
@@ -51,11 +47,10 @@ class TicTacToe:
         self.board_state[7] = b7
         self.board_state[8] = b8
 
-        self.create_grid(self.board_state)
 
-    def create_grid(self, board):
+    def create_grid(self):
         row = 0
-        for pos in range(len(board)):
+        for pos in range(len(self.board_state)):
             # print('pos, ' + str(pos))
             if pos == 3 or pos == 6:
                 row += 1
@@ -67,9 +62,10 @@ class TicTacToe:
             elif pos == 6 or pos == 7 or pos == 8:
                 self.board_state[pos].grid(row=row, column=(pos - row*3))
 
-    def check_for_win(self, player, board_type):
-        board = board_type
-        win_positions = []
+
+    def check_for_win(self, player):
+        board = self.board_state
+
         # row check
         if board[0]["text"] == player and board[1]["text"] == player and board[2]["text"] == player:
             self.display_win([0, 1, 2], player)
@@ -108,6 +104,32 @@ class TicTacToe:
             return True
         return False
 
+    def check_for_win_in_minimax(self, board_state, player):
+        board = board_state
+        # row check
+        if board[0] == player and board[1] == player and board[2] == player:
+            return True
+        elif board[3] == player and board[4] == player and board[5] == player:
+            return True
+        elif board[6] == player and board[7] == player and board[8] == player:
+            return True
+
+        # column check
+        elif board[0] == player and board[3] == player and board[6] == player:
+            return True
+        elif board[1] == player and board[4] == player and board[7] == player:
+            return True
+        elif board[2] == player and board[5] == player and board[8] == player:
+            return True
+
+        # possible diagonal wins
+        elif board[0] == player and board[4] == player and board[8] == player:
+            return True
+        elif board[2] == player and board[4] == player and board[6] == player:
+            return True
+
+        return False
+
     def display_win(self, win_positions, player):
         self.player_win = player
         for i in range(len(win_positions)):
@@ -121,22 +143,18 @@ class TicTacToe:
         for i in range(len(self.board_state)):
             self.board_state[i].config(state=DISABLED)
 
-    # runs an iteration to check if "picked_position: (int)" on board_state is empty(True) or taken(False)
-    def available_position(self, picked_position: object) -> object:
-        return self.board_state[picked_position]["text"] == " "
-
     def play_as_human(self, btn):
         # can_make_move = lambda: selected_position == " "
         if btn["text"] == " ":
             btn["text"] = self.player1
             self.total_moves += 1
-            self.check_for_win(self.player1)
+            is_game_over = self.check_for_win(self.player1)
             # if not winner after human plays then we play ai
-            if not self.is_there_winner:
+            if not is_game_over:
                 self.play_ai(self.player2)
 
     def play_ai(self, player_ai):
-        current_board_state = self.board_state[:]
+        current_board_state = list(map(lambda x: x["text"], self.board_state))
 
         best_score, best_score_cell = self.use_minimax(current_board_state, player_ai, True)
 
@@ -147,77 +165,48 @@ class TicTacToe:
         self.check_for_win(player_ai, current_board_state)
 
 
-        # print(btn)
-        # while self.clicked is True and self.total_moves != 9:
-        #     random_position = random.randint(0, 8)
-        #     print(random_position)
-        #     if self.board_state[random_position]["text"] == " ":
-        #         self.board_state[random_position]["text"] = "O"
-        #         self.clicked = False
-        #         self.total_moves += 1
-        #         self.check_for_win(self.player2)
-
-    def get_empty_cells(self, current_board_state):
+    def get_empty_cells(self, current_board_state, minimax_flag):
         empty_cells_list = []
 
         for i in range(len(current_board_state)):
-            if current_board_state[i]["text"] == " ":
-                empty_cells_list.append(i)
+            if minimax_flag:
+                if current_board_state[i] == " ":
+                    empty_cells_list.append(i)
+            else:
+                if current_board_state[i]["text"] == " ":
+                    empty_cells_list.append(i)
 
         return empty_cells_list
 
     def use_minimax(self, current_board_state, current_player_mark, maximizing_player):
-        print(self.board_state)
-        available_cells_on_board = self.get_empty_cells(current_board_state)
-        terminal_state = dict()
+        available_cells_on_board = self.get_empty_cells(current_board_state, True)
 
-        if self.check_for_win(self.player1):
-            terminal_state['score'] = -1
-            return terminal_state["score"], None
-        elif self.check_for_win(self.player2):
-            terminal_state['score'] = 1
-            return terminal_state["score"], None
+        if self.check_for_win_in_minimax(current_board_state, self.player1):
+            return -1, None
+        elif self.check_for_win_in_minimax(current_board_state, self.player2):
+            return 1, None
         elif len(available_cells_on_board) == 0:
-            terminal_state['score'] = 0
-            return terminal_state["score"], None
+            return 0, None
 
-        all_test_move_outcomes = []
-        curr_test_move_state = dict()
-
-
-
-        # for i in range(len(available_cells_on_board)):
-            # curr_test_move_state['index'] = available_cells_on_board[i]
-            # current_board_state[available_cells_on_board[i]] = current_player_mark
-            # check for win
-            # if maximizing_player:
-            #     result = self.use_minimax(current_board_state, self.player1)
-            #     curr_test_move_state = result.score
-            # elif current_player_mark == self.player1:
-            #     result = self.use_minimax(current_board_state, self.player2)
-            #     curr_test_move_state.score = result.score
-
-            # current_board_state[available_cells_on_board[i]] = " "
-            # all_test_move_outcomes.append(curr_test_move_state)
 
         best_score = float("-inf")
         best_score_minimizing = float("inf")
         best_score_cell = None
         for i in range(len(available_cells_on_board)):
-            current_board_state[available_cells_on_board[i]]["text"] = current_player_mark
+            current_board_state[available_cells_on_board[i]] = current_player_mark
             if maximizing_player:
-                result, _ = self.use_minimax(current_board_state[:], self.player1, False)
+                result, _ = self.use_minimax(current_board_state, self.player1, False)
                 if result > best_score:
                     best_score = result
                     best_score_cell = available_cells_on_board[i]
 
             else:
-                result, _ = self.use_minimax(current_board_state[:], self.player2, True)
+                result, _ = self.use_minimax(current_board_state, self.player2, True)
                 if result < best_score_minimizing:
                     best_score_minimizing = result
                     best_score_cell = available_cells_on_board[i]
 
-            current_board_state[available_cells_on_board[i]]["text"] = " "
+            current_board_state[available_cells_on_board[i]] = " "
 
         return best_score if maximizing_player else best_score_minimizing, best_score_cell
 

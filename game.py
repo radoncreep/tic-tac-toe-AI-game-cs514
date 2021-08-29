@@ -157,7 +157,7 @@ class TicTacToe:
         alpha = float("-inf")
         beta = float("inf")
         best_score, best_score_cell = self.use_minimax(current_board_state, player_ai, True,  alpha, beta)
-        print(best_score, best_score_cell)
+
         btn = self.board_state[best_score_cell]
 
         btn["text"] = player_ai

@@ -6,6 +6,7 @@ root.title('Tic-Tac-Toe-CS514-AI')
 
 clicked_on_start_game = False
 
+
 class TicTacToe:
     def __init__(self, player1, player2):
         self.player1 = player1
@@ -164,7 +165,6 @@ class TicTacToe:
         self.total_moves += 1
         self.check_for_win(player_ai)
 
-
     def get_empty_cells(self, current_board_state, minimax_flag):
         empty_cells_list = []
 
@@ -177,7 +177,6 @@ class TicTacToe:
                     empty_cells_list.append(i)
 
         return empty_cells_list
-
 
     def use_minimax(self, current_board_state, current_player_mark, maximizing_player, alpha, beta):
         available_cells_on_board = self.get_empty_cells(current_board_state, True)
@@ -229,6 +228,13 @@ class TicTacToe:
 
             return worst_score, worst_score_cell
 
+    def restart_game(self):
+        print('restart 1')
+        self.total_moves = 0
+        self.is_there_winner = False
+        self.create_board()
+
+
 game_init = TicTacToe("X", "O")
 
 
@@ -240,7 +246,7 @@ game_menu = Menu(root)
 root.config(menu=game_menu)
 menu_options = Menu(game_menu, tearoff=False)
 game_menu.add_cascade(label="Options", menu=menu_options)
-menu_options.add_command(label="Start Game", command=game_init.create_board())
+menu_options.add_command(label="Restart Game", command=game_init.restart_game)
 
 start_game()
 root.mainloop()

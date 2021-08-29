@@ -6,6 +6,7 @@ root.title('Tic-Tac-Toe-CS514-AI')
 
 clicked_on_start_game = False
 
+
 class TicTacToe:
     def __init__(self, player1, player2):
         self.player1 = player1
@@ -154,7 +155,10 @@ class TicTacToe:
     def play_ai(self, player_ai):
         current_board_state = list(map(lambda x: x["text"], self.board_state))
 
-        best_score, best_score_cell = self.use_minimax(current_board_state, player_ai, True)
+        alpha = float("-inf")
+        beta = float("inf")
+        best_score, best_score_cell = self.use_minimax(current_board_state, player_ai, True, alpha, beta)
+        print(best_score)
 
         btn = self.board_state[best_score_cell]
 
@@ -176,8 +180,7 @@ class TicTacToe:
 
         return empty_cells_list
 
-
-    def use_minimax(self, current_board_state, current_player_mark, maximizing_player):
+    def use_minimax(self, current_board_state, current_player_mark, maximizing_player, alpha, beta):
         available_cells_on_board = self.get_empty_cells(current_board_state, True)
 
         if self.check_for_win_in_minimax(current_board_state, self.player1):
@@ -187,28 +190,32 @@ class TicTacToe:
         elif len(available_cells_on_board) == 0:
             return 0, None
 
-
         best_score = float("-inf")
         best_score_minimizing = float("inf")
         best_score_cell = None
         for i in range(len(available_cells_on_board)):
             current_board_state[available_cells_on_board[i]] = current_player_mark
             if maximizing_player:
-                result, _ = self.use_minimax(current_board_state, self.player1, False)
+                result, _ = self.use_minimax(current_board_state, self.player1, False, alpha, beta)
                 if result > best_score:
                     best_score = result
                     best_score_cell = available_cells_on_board[i]
+                    alpha = max(alpha, result)
+                    if beta <= alpha:
+                        break
 
             else:
-                result, _ = self.use_minimax(current_board_state, self.player2, True)
+                result, _ = self.use_minimax(current_board_state, self.player2, True, alpha, beta)
                 if result < best_score_minimizing:
                     best_score_minimizing = result
                     best_score_cell = available_cells_on_board[i]
+                    beta = min(beta, result)
+                    if beta <= alpha:
+                        break
 
             current_board_state[available_cells_on_board[i]] = " "
 
         return best_score if maximizing_player else best_score_minimizing, best_score_cell
-
 
 
 game_init = TicTacToe("X", "O")
